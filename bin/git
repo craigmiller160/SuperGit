@@ -1,0 +1,25 @@
+#!/bin/bash
+# A test git override script
+
+function call_git {
+
+	/usr/local/Cellar/git/2.7.2/bin/git "${@}"
+
+}
+
+if [ $# -gt 0 ]; then
+	case $1 in
+		symlink | create | delete | send | backup)
+			### TODO this is what calls super git, remove output line and call super git
+			echo "Special git function called"
+		;;
+		*)
+			call_git "${@}"
+		;;
+	esac
+else
+	call_git "${@}"
+fi
+
+
+
