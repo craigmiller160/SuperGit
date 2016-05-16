@@ -1,0 +1,4 @@
+# gitignore file for project
+
+# Mac OSX Files
+.DS_Store
