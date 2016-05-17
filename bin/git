@@ -1,24 +1,43 @@
 #!/bin/bash
 # A test git override script
 
-function call_git {
+function display_error {
 
-	/usr/local/Cellar/git/2.7.2/bin/git "${@}"
+	MESSAGE="$1"
+
+	if [ $? -ne 0 ]; then
+		echo "Error! $MESSAGE"
+		echo "Run 'sgit setup' or redownload project"
+		exit 1
+	fi
 
 }
 
+# Try to find the configuration files, and display an error if they can't be found
+source "../conf/global.conf" 1>/dev/null 2>/dev/null
+display_error "Cannot find global.conf file."
+source "../conf/local.conf" 1>/dev/null 2>/dev/null
+display_error "Cannot find local.conf file"
+
+# Try to find the path to the git binary, and display an error if it can't be found
+if [ ! -f "$GIT_PATH" ]; then
+	echo "Error! Cannot find path to standard git binary"
+	echo "Run 'sgit setup' or redownload project and try again"
+	exit 1
+fi
+
+# Parse the command, and call either git or sgit depending on which applies
 if [ $# -gt 0 ]; then
 	case $1 in
 		symlink | create | delete | send | backup)
-			### TODO this is what calls super git, remove output line and call super git
-			echo "Special git function called"
+			./sgit "${@}"
 		;;
 		*)
-			call_git "${@}"
+			"$GIT_PATH ${@}"
 		;;
 	esac
 else
-	call_git "${@}"
+	"$GIT_PATH ${@}"
 fi
 
 

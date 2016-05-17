@@ -1,0 +1,45 @@
+#!/bin/bash
+# SuperGit Main Script
+
+function display_error {
+
+	MESSAGE="$1"
+
+	if [ $? -ne 0 ]; then
+		echo "Error! $MESSAGE"
+		echo "Run 'sgit setup' or redownload project"
+		exit 1
+	fi
+
+}
+
+# Try to find the configuration files, and display an error if they can't be found
+source "../conf/global.conf" 1>/dev/null 2>/dev/null
+display_error "Cannot find global.conf file."
+source "../conf/local.conf" 1>/dev/null 2>/dev/null
+display_error "Cannot find local.conf file"
+
+# Execute the sgit command
+case $1 in
+	setup)
+		../core/setup.sh
+	;;
+	symlink)
+		../core/symlink.sh
+	;;
+	create)
+		../core/create.sh
+	;;
+	delete)
+		../core/delete.sh
+	;;
+	send)
+		../core/send.sh
+	;;
+	backup)
+		../core/backup.sh
+	;;
+	*)
+		echo "Should never have gotten here with a non sgit command. Exiting"
+		exit 1
+esac
