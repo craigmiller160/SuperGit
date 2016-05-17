@@ -1,21 +1,13 @@
 #!/bin/bash
 # A script to practice setting up the project files to be symlinked
 
-# Core variables that define the locations of all directories
-DEV_ROOT="/Users/craigmiller/NewTestDev"
-DEV_MAIN="$DEV_ROOT/Main"
-PROJECT="$DEV_ROOT/.project"
-TEMPLATE="$DEV_ROOT/.template"
-LOGS="$DEV_ROOT/.logs"
+# Assign shell parameters
+SGIT="$1"
+
+source "$SGIT/../conf/global.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/local.conf" 1>/dev/null 2>/dev/null
+
 LOG_FILE="$LOGS/symlink.log"
-
-### TODO after doing all the symlinking, commit changes in Main and, if possible, do the reset OR DON'T, BECAUSE THE FILES WON'T BE BEING TRACKED ANYWAY
-
-
-### TODO put this logs creating code in a better place
-if [ ! -d "$LOGS" ]; then
-	mkdir -p "$LOGS"
-fi
 
 exec 3>&1 1>>"${LOG_FILE}" 2>&1
 if [ -f "$LOG_FILE" ]; then

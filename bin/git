@@ -13,10 +13,14 @@ function display_error {
 
 }
 
+SGIT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+### TODO this error handling system is failing
+
 # Try to find the configuration files, and display an error if they can't be found
-source "../conf/global.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/global.conf" 1>/dev/null 2>/dev/null
 display_error "Cannot find global.conf file."
-source "../conf/local.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/local.conf" 1>/dev/null 2>/dev/null
 display_error "Cannot find local.conf file"
 
 # Try to find the path to the git binary, and display an error if it can't be found
@@ -33,11 +37,11 @@ if [ $# -gt 0 ]; then
 			./sgit "${@}"
 		;;
 		*)
-			"$GIT_PATH ${@}"
+			"$GIT_PATH" "${@}"
 		;;
 	esac
 else
-	"$GIT_PATH ${@}"
+	"$GIT_PATH" "${@}"
 fi
 
 

@@ -13,31 +13,40 @@ function display_error {
 
 }
 
+SGIT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+### TODO this error handling system is failing
+
 # Try to find the configuration files, and display an error if they can't be found
-source "../conf/global.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/global.conf" 1>/dev/null 2>/dev/null
 display_error "Cannot find global.conf file."
-source "../conf/local.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/local.conf" 1>/dev/null 2>/dev/null
 display_error "Cannot find local.conf file"
+
+# Create the logs directory, if it doesn't already exist
+if [ ! -d "$LOGS" ]; then
+	mkdir -p "$LOGS"
+fi
 
 # Execute the sgit command
 case $1 in
 	setup)
-		../core/setup.sh
+		../core/setup.sh "$SGIT"
 	;;
 	symlink)
-		../core/symlink.sh
+		../core/symlink.sh "$SGIT" "${@:2}"
 	;;
 	create)
-		../core/create.sh
+		../core/create.sh "$SGIT" "${@:2}"
 	;;
 	delete)
-		../core/delete.sh
+		../core/delete.sh "$SGIT" "${@:2}"
 	;;
 	send)
-		../core/send.sh
+		../core/send.sh "$SGIT" "${@:2}"
 	;;
 	backup)
-		../core/backup.sh
+		../core/backup.sh "$SGIT" "${@:2}"
 	;;
 	*)
 		echo "Should never have gotten here with a non sgit command. Exiting"

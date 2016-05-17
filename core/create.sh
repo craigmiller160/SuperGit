@@ -1,30 +1,24 @@
 #!/bin/bash
 # Script to create new local branch
 
-# Core variables that define the locations of all directories
-DEV_ROOT="/Users/craigmiller/NewTestDev"
-DEV_MAIN="$DEV_ROOT/Main"
-PROJECT="$DEV_ROOT/.project"
-TEMPLATE="$DEV_ROOT/.template"
-LOGS="$DEV_ROOT/.logs"
-LOG_FILE="$LOGS/create.log"
-
 ### TODO ensure on master branch in Main directory before beginning process
 ### TODO update trunk before creating the new branch
 ### TODO add option to pull from remote
 
 ### TODO revise this section that produces an error if not enough arguments
-if [ $# -lt 1 ]; then
+if [ $# -lt 2 ]; then
 	echo "Error! Not enough arguments for the script"
 	exit 1
 fi
 
-NAME="$1"
+# Assign shell parameters
+SGIT="$1"
+NAME="$2"
 
-### TODO put this logs creating code in a better place
-if [ ! -d "$LOGS" ]; then
-	mkdir -p "$LOGS"
-fi
+source "$SGIT/../conf/global.conf" 1>/dev/null 2>/dev/null
+source "$SGIT/../conf/local.conf" 1>/dev/null 2>/dev/null
+
+LOG_FILE="$LOGS/create.log"
 
 # Prepare log file
 exec 3>&1 1>>"${LOG_FILE}" 2>&1
