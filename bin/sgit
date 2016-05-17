@@ -31,22 +31,22 @@ fi
 # Execute the sgit command
 case $1 in
 	setup)
-		../core/setup.sh "$SGIT"
+		"$SGIT/../core/setup.sh" "$SGIT"
 	;;
 	symlink)
-		../core/symlink.sh "$SGIT" "${@:2}"
+		"$SGIT/../core/symlink.sh" "$SGIT" "${@:2}"
 	;;
 	create)
-		../core/create.sh "$SGIT" "${@:2}"
+		"$SGIT/../core/create.sh" "$SGIT" "${@:2}"
 	;;
 	delete)
-		../core/delete.sh "$SGIT" "${@:2}"
+		"$SGIT/../core/delete.sh" "$SGIT" "${@:2}"
 	;;
 	send)
-		../core/send.sh "$SGIT" "${@:2}"
+		"$SGIT/../core/send.sh" "$SGIT" "${@:2}"
 	;;
 	backup)
-		../core/backup.sh "$SGIT" "${@:2}"
+		"$SGIT/../core/backup.sh" "$SGIT" "${@:2}"
 	;;
 	*)
 		echo "Should never have gotten here with a non sgit command. Exiting"

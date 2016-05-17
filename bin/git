@@ -34,7 +34,7 @@ fi
 if [ $# -gt 0 ]; then
 	case $1 in
 		symlink | create | delete | send | backup)
-			./sgit "${@}"
+			"$SGIT/sgit" "${@}"
 		;;
 		*)
 			"$GIT_PATH" "${@}"
