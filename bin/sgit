@@ -51,7 +51,10 @@ case $1 in
 	backup)
 		"$SGIT/../core/backup.sh" "$SGIT" "${@:2}"
 	;;
+	--help)
+		"$SGIT/../core/help.sh" "$SGIT" "${@:2}"
+	;;
 	*)
-		echo "Should never have gotten here with a non sgit command. Exiting"
+		echo "No sgit command provided. Re-run with a command, or use 'sgit --help' for a list of commands"
 		exit 1
 esac
