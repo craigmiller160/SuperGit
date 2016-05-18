@@ -33,7 +33,7 @@ fi
 # Parse the command, and call either git or sgit depending on which applies
 if [ $# -gt 0 ]; then
 	case $1 in
-		symlink | create | delete | send | backup)
+		symlink | create | squash | delete | send | backup)
 			"$SGIT/sgit" "${@}"
 		;;
 		*)

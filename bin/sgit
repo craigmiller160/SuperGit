@@ -33,6 +33,9 @@ case $1 in
 	setup)
 		"$SGIT/../core/setup.sh" "$SGIT"
 	;;
+	squash)
+		"$SGIT/../core/squash.sh" "$SGIT"
+	;;
 	symlink)
 		"$SGIT/../core/symlink.sh" "$SGIT" "${@:2}"
 	;;
