@@ -34,7 +34,7 @@ case $1 in
 		"$SGIT/../core/setup.sh" "$SGIT"
 	;;
 	squash)
-		"$SGIT/../core/squash.sh" "$SGIT"
+		"$SGIT/../core/squash.sh" "$SGIT" "${@:2}"
 	;;
 	symlink)
 		"$SGIT/../core/symlink.sh" "$SGIT" "${@:2}"
