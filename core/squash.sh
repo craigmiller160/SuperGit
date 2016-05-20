@@ -23,6 +23,11 @@ else
 	touch "$LOG_FILE"
 fi
 
+# Overwrite sqush log file
+echo "Squash Script Log File"
+echo "Date: $(date)"
+echo ""
+
 # Variable parameters assigned based on arguments
 custom_message=false
 message=""

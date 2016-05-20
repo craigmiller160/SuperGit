@@ -28,6 +28,11 @@ else
 	touch "$LOG_FILE"
 fi
 
+# Overwrite create log file
+echo "Create Script Log File"
+echo "Date: $(date)"
+echo ""
+
 # Move to main directory for using git commands
 cd "$DEV_MAIN"
 
