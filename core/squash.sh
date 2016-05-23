@@ -97,19 +97,18 @@ valid=false
 squash=false
 while ! $valid ; do
 	printf "$entry\n" | tee /dev/fd/3
-	printf "Are you satisfied with this log entry? (y,n): " | tee /dev/fd/3
+	printf "Are you satisfied with this log entry? (y/n): " | tee /dev/fd/3
 	read
 	case $REPLY in
-		y)
+		y|Y)
 			squash=true
 			valid=true
 		;;
-		n)
+		n|N)
 			echo "Cancelling commit squash" | tee /dev/fd/3
 			valid=true
 		;;
 		*)
-			echo "" | tee /dev/fd/3
 			echo "" | tee /dev/fd/3
 			echo "Error! Invalid entry. Please try again!" | tee /dev/fd/3
 		;;
@@ -118,6 +117,46 @@ done
 
 # Do the actual squashing of commits
 if $squash ; then
+	echo "Resetting $count commits"
 	git reset --soft HEAD~$count &&
 	git commit -m "$entry"
+
+	echo "Commit squashing complete." | tee /dev/fd/3
+
+	# Offer to delete and rebuild branch directory
+	rebuild=false
+	valid=false
+	while ! $valid ; do
+		echo "Do you want to rebuild your branch directory?" | tee /dev/fd/3
+		echo "This will keep it in sync with the Main directory, but any uncommitted changes will be lost." | tee /dev/fd/3
+		printf "Rebuild branch directory? (y/n): "
+		read
+		case $REPLY in
+			y|Y)
+				rebuild=true
+				valid=true
+			;;
+			n|N)
+				echo "Leaving branch directory alone. It will no longer be in sync with the Main directory." | tee /dev/fd/3
+				valid=true
+			;;
+			*)
+				echo "" | tee /dev/fd/3
+				echo "Error! Invalid entry. Please try again!" | tee /dev/fd/3
+			;;
+		esac
+	done
+
+	# Peform the rebuild, if selected
+	if $rebuild ; then
+		echo "Rebuilding branch directory, please wait" | tee /dev/fd/3
+		echo "Deleting existing directory"
+		cd "$DEV_ROOT"
+		rm -rf "$branch_name"
+		echo "Running create script"
+		"$SGIT/../core/create.sh $SGIT $branch_name"
+		echo "Rebuild is now complete" | tee /dev/fd/3
+	fi
 fi
+
+exit 0
