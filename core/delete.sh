@@ -150,7 +150,7 @@ echo "$intro." | tee /dev/fd/3
 cd "$DEV_ROOT_PATH"
 
 # Delete the directory if that option is chosen
-if $DIR; then
+if $DIR ; then
 	DIR_EXISTS=$(ls | grep $NAME)
 	if [ "$DIR_EXISTS" != "" ]; then
 		printf "$NAME: Deleting branch directory from filesystem." | tee /dev/fd/3
@@ -171,4 +171,18 @@ if $DIR; then
 		printf "${RED}${BOLD}$TAG $NAME: Branch is not a directory on local filesystem. Nothing deleted.${NORM}${NC}\n" | tee /dev/fd/3
 	fi
 fi
+
+# Delete the local branch if that option is chosen.
+if $LOCAL ; then
+	echo "$NAME: Deleting local git branch" | tee /dev/fd/3
+	# Check that the branch exists to delete
+	result=$(git rev-parse --verify "$NAME")
+	if [ "$result" == "" ]; then
+		printf "${RED}${BOLD}$NAME: Local git branch doesn't exist.${NORM}${NC}\n" | tee /dev/fd/3
+	else
+		git branch -D "$NAME"
+	fi
+fi
+
+### TODO ultimately figure out what to do with the remote option
 
