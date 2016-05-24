@@ -36,6 +36,18 @@ echo ""
 # Move to main directory for using git commands
 cd "$DEV_MAIN"
 
+current_branch=$(git symbolic-ref HEAD | awk -F/ '{print $3}')
+if [ "$current_branch" != "master" ]; then
+	echo "Switching Main directory to master branch"
+	git checkout master
+	if [ $? -ne 0 ]; then
+		echo "An unexpected error has occurred. Please check the logs" | tee /dev/fd/3
+		exit 1
+	fi
+else
+	echo "Already on master branch"
+fi
+
 # Test if the local branch exists, if not create it
 git rev-parse --verify "$NAME" 1>/dev/null 2>/dev/null
 if [ $? -ne 0 ]; then
