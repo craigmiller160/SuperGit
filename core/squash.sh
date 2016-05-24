@@ -129,7 +129,7 @@ if $squash ; then
 	while ! $valid ; do
 		echo "Do you want to rebuild your branch directory?" | tee /dev/fd/3
 		echo "This will keep it in sync with the Main directory, but any uncommitted changes will be lost." | tee /dev/fd/3
-		printf "Rebuild branch directory? (y/n): "
+		printf "Rebuild branch directory? (y/n): " | tee /dev/fd/3
 		read
 		case $REPLY in
 			y|Y)
@@ -154,7 +154,7 @@ if $squash ; then
 		cd "$DEV_ROOT"
 		rm -rf "$branch_name"
 		echo "Running create script"
-		"$SGIT/../core/create.sh $SGIT $branch_name"
+		"$SGIT/../core/create.sh" "$SGIT" "$branch_name"
 		echo "Rebuild is now complete" | tee /dev/fd/3
 	fi
 fi
