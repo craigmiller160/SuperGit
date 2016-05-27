@@ -21,6 +21,8 @@ echo "Symlink Script Log File"
 echo "Date: $(date)"
 echo ""
 
+echo "Running this script" | tee /dev/fd/3
+
 # Create .project directory if it doesn't exist
 if [ ! -d "$PROJECT" ]; then
 	echo "Creating project directory" | tee /dev/fd/3
@@ -48,8 +50,6 @@ if [ ! -h "$DEV_MAIN/.idea" ]; then
 	mv -f "$DEV_MAIN/.idea" "$PROJECT/.idea"
 	echo "   Symlinking reloacted .idea directory back to Main project"
 	ln -s "$PROJECT/.idea" "$DEV_MAIN/.idea"
-	echo "   Symlinking relocated .idea directory to .template"
-	ln -s "$PROJECT/.idea" "$TEMPLATE/.idea"
 fi
 
 # Find all .iml files
@@ -67,14 +67,10 @@ for f in ${files[@]}; do
 
 		echo "   Creating directory path for $file in .project"
 		mkdir -p "$PROJECT/$dir"
-		echo "   Creating directory path for $file in .template"
-		mkdir -p "$TEMPLATE/$dir"
 		echo "   Moving $file from Main to .project"
 		mv "$f" "$PROJECT/$f"
 		echo "   Symlinking $file from .project back to Main"
 		ln -s "$PROJECT/$f" "$DEV_MAIN/$f"
-		echo "   Symlinking $file from .project to .template"
-		ln -s "$PROJECT/$f" "$TEMPLATE/$f"
 	fi
 	
 done
@@ -84,3 +80,20 @@ cd "$PROJECT"
 echo "Committing changes to project files with git" | tee /dev/fd/3
 git add . 1>/dev/null
 git commit -m "Updating project files" 1>/dev/null
+
+# Populate new template directory
+echo "Populating new Template directory" | tee /dev/fd/3
+echo "Symlinking .idea directory from .project to .template"
+ln -s "$PROJECT/.idea" "$TEMPLATE/.idea"
+echo "Searching for *.iml files in .project, and simlinking them to .template"
+cd "$PROJECT"
+files=$(find . -name '*.iml')
+for f in ${files[@]}; do
+	dir=$(dirname $f)
+	file=$(basename $f)
+
+	echo "   Creating directory path for $file in .template"
+	mkdir -p "$TEMPLATE/$dir"
+	echo "   Symlinking $file from .project to .template"
+	ln -s "$PROJECT/$f" "$TEMPLATE/$f"
+done
