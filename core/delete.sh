@@ -147,7 +147,7 @@ fi
 
 echo "$intro." | tee /dev/fd/3
 
-cd "$DEV_ROOT_PATH"
+cd "$DEV_ROOT"
 
 # Delete the directory if that option is chosen
 if $DIR ; then
@@ -174,12 +174,15 @@ fi
 
 # Delete the local branch if that option is chosen.
 if $LOCAL ; then
+	cd "$DEV_MAIN"
 	echo "$NAME: Deleting local git branch" | tee /dev/fd/3
 	# Check that the branch exists to delete
 	result=$(git rev-parse --verify "$NAME")
+	echo "rev-parse result: $result"
 	if [ "$result" == "" ]; then
 		printf "${RED}${BOLD}$NAME: Local git branch doesn't exist.${NORM}${NC}\n" | tee /dev/fd/3
 	else
+		echo "Executing branch delete"
 		git branch -D "$NAME"
 	fi
 fi
