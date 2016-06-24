@@ -1,6 +1,7 @@
 #!/bin/bash
 # SuperGit Setup Script
 
+### TODO add item for configuring the remote name
 ### TODO add backup remote configuration
 ### TODO test for value existence, and offer to leave the same or change
 
