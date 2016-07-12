@@ -51,6 +51,9 @@ case $1 in
 	backup)
 		"$SGIT/../core/backup.sh" "$SGIT" "${@:2}"
 	;;
+	logging)
+		"$SGIT/../core/logging.sh" "$SGIT" "${@:2}"
+	;;
 	--help)
 		"$SGIT/../core/help.sh" "$SGIT" "${@:2}"
 	;;
